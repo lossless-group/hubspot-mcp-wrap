@@ -1,4 +1,4 @@
-# hubspot-mcp
+# hubspot-mcp-wrap
 
 A client's own front door to HubSpot's remote MCP server (`mcp.hubspot.com`).
 
@@ -36,15 +36,14 @@ your computer), then HubSpot's sign-in.
    the existing one). Add the redirect URL `<PUBLIC_URL>/callback`.
 2. In the client's Cloudflare account: `npx wrangler kv namespace create
    hubspot-mcp-oauth`.
-3. Add an `env.<client>` block to `wrangler.jsonc`: its KV id, `PUBLIC_URL`,
+3. Copy the `env.example` block in `wrangler.jsonc` to `env.<client>`, with its KV id, `PUBLIC_URL`,
    `LABEL`, `HUBSPOT_CLIENT_ID`, `ALLOWED_HUB_IDS`.
 4. `npx wrangler deploy --env <client>`, then the two secrets:
    `HUBSPOT_CLIENT_SECRET` (from the client-stack `.env`) and
    `CONSENT_SECRET` (48 random characters; it only signs the "don't ask
    again" cookie, so rotating it just brings the consent page back).
 
-## Deployments
+## License
 
-| Client | URL | HubSpot portal |
-|---|---|---|
-| Edviro | https://hubspot-mcp-edviro.tanujsiripurapu.workers.dev/mcp | 246641970 |
+Apache-2.0. See [LICENSE](LICENSE). Keep [NOTICE](NOTICE) in any copy or fork:
+it credits The Lossless Group.

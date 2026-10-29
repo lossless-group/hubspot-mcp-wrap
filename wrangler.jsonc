@@ -2,7 +2,8 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   // One environment per client: each is its own Worker, in that client's
   // Cloudflare account, holding that client's HubSpot MCP auth app.
-  // Deploy with: npx wrangler deploy --env <client>
+  // Copy the "example" block, rename it for the client, fill in the <...>
+  // values, then deploy with: npx wrangler deploy --env <client>
   "name": "hubspot-mcp",
   "main": "src/index.ts",
   "compatibility_date": "2026-10-25",
@@ -10,21 +11,22 @@
   "workers_dev": true,
   "observability": { "enabled": true },
   "env": {
-    "edviro": {
-      "name": "hubspot-mcp-edviro",
+    "example": {
+      "name": "hubspot-mcp-example", // hubspot-mcp-<client>
       // Grants, tokens, and registered clients. HubSpot tokens are stored only
       // inside each grant's encrypted props.
-      "kv_namespaces": [{ "binding": "OAUTH_KV", "id": "4e7f4fd9cd9840ff9c6bba003c099cf5" }],
+      // npx wrangler kv namespace create hubspot-mcp-oauth
+      "kv_namespaces": [{ "binding": "OAUTH_KV", "id": "<kv namespace id>" }],
       "vars": {
-        "PUBLIC_URL": "https://hubspot-mcp-edviro.tanujsiripurapu.workers.dev",
-        "LABEL": "Edviro",
+        "PUBLIC_URL": "https://hubspot-mcp-<client>.<your-subdomain>.workers.dev",
+        "LABEL": "<Client name, shown on the consent page>",
         // The HubSpot MCP auth app's client ID (not a secret). Its redirect
         // URLs must include PUBLIC_URL + /callback.
-        "HUBSPOT_CLIENT_ID": "fdc439c7-b0be-438e-b90f-c3e42d31635b",
-        // Edviro's portal only: a sign-in to any other HubSpot is refused.
-        "ALLOWED_HUB_IDS": "246641970"
+        "HUBSPOT_CLIENT_ID": "<HubSpot MCP auth app client id>",
+        // The client's portal only: a sign-in to any other HubSpot is refused.
+        "ALLOWED_HUB_IDS": "<HubSpot portal id>"
       }
-      // Secrets (wrangler secret put --env edviro): HUBSPOT_CLIENT_SECRET, CONSENT_SECRET
+      // Secrets (wrangler secret put --env <client>): HUBSPOT_CLIENT_SECRET, CONSENT_SECRET
     }
   }
 }
